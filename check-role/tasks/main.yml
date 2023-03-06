@@ -1,1 +1,23 @@
+  - name: Check OverCloud stack state
+    shell: |
+        source ~/stackrc
+        openstack stack list
+    register: results
+  - debug:
+      var: results.stdout_lines
 
+  - name: Openstack failures list
+    shell: |
+        source ~/stackrc
+        openstack stack failures list overcloud
+    register: results
+  - debug:
+      var: results.stdout_lines
+
+  - name: List all overcloud images
+    shell: |
+        source ~/stackrc
+        openstack image list
+    register: results
+  - debug:
+      var: results.stdout_lines
