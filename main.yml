@@ -5,7 +5,4 @@
 
 
   roles:
-    - prepare-undercloud-upgrade
-    - undercloud-upgrade
-    - prepare-overcloud-upgrade
-    - overcloud-upgrade
+    - check-role
