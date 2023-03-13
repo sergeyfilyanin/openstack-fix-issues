@@ -1,7 +1,7 @@
 ---
 - name: "check role undercloud"
-  hosts: undercloud
-  become_user: stack
+  hosts: testing
+  become_user: root
 
 
   roles:
