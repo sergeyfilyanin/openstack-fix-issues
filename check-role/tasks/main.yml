@@ -1,23 +1,21 @@
-  - name: Check OverCloud stack state
-    shell: |
-        source ~/stackrc
-        openstack stack list
+  - name: Start tests
+    ansible.builtin.shell: npx playwright test
+    args:
+      chdir: /opt/openstack-testing
     register: results
   - debug:
       var: results.stdout_lines
 
-  - name: Openstack failures list
+  - name: Allure generate results
     shell: |
-        source ~/stackrc
-        openstack stack failures list overcloud
+      allure generate allure-results --clean
     register: results
   - debug:
       var: results.stdout_lines
 
-  - name: List all overcloud images
+  - name: Allure open allure-report
     shell: |
-        source ~/stackrc
-        openstack image list
+      allure serve -p 32000
     register: results
   - debug:
       var: results.stdout_lines
