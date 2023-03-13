@@ -7,6 +7,8 @@
       var: results.stdout_lines
 
   - name: Allure generate results
+    args:
+      chdir: /opt/openstack-testing
     shell: |
       PATH=/opt/allure-commandline/allure-2.21.0/bin:$PATH
       allure generate allure-results --clean
@@ -15,6 +17,8 @@
       var: results.stdout_lines
 
   - name: Allure open allure-report
+    args:
+      chdir: /opt/openstack-testing
     shell: |
       PATH=/opt/allure-commandline/allure-2.21.0/bin:$PATH
       allure serve -p 32000
