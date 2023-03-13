@@ -8,6 +8,7 @@
 
   - name: Allure generate results
     shell: |
+      PATH=/opt/allure-commandline/allure-2.21.0/bin:$PATH
       allure generate allure-results --clean
     register: results
   - debug:
@@ -15,6 +16,7 @@
 
   - name: Allure open allure-report
     shell: |
+      PATH=/opt/allure-commandline/allure-2.21.0/bin:$PATH
       allure serve -p 32000
     register: results
   - debug:
