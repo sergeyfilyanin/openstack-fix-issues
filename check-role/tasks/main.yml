@@ -1,5 +1,37 @@
-  - name: Start tests
-    ansible.builtin.shell: npx playwright test
+  - name: Start T01 Administration - Cloud Service Tests
+    ansible.builtin.shell: npx playwright test T01.spec.ts
+    args:
+      chdir: /opt/openstack-testing
+    register: results
+  - debug:
+      var: results.stdout_lines
+      
+  - name: Start T03 Administration - Compute / Storage Tests
+    ansible.builtin.shell: npx playwright test T03.spec.ts
+    args:
+      chdir: /opt/openstack-testing
+    register: results
+  - debug:
+      var: results.stdout_lines
+
+  - name: Start T06 Openstack Nodes Functionality Tests
+    ansible.builtin.shell: npx playwright test T06.spec.ts
+    args:
+      chdir: /opt/openstack-testing
+    register: results
+  - debug:
+      var: results.stdout_lines
+      
+  - name: Start T07 RHOSP Version Tests
+    ansible.builtin.shell: npx playwright test T07.spec.ts
+    args:
+      chdir: /opt/openstack-testing
+    register: results
+  - debug:
+      var: results.stdout_lines
+      
+  - name: Start T04 Infrastructure-Virtual Resources Tests
+    ansible.builtin.shell: npx playwright test T04.spec.ts
     args:
       chdir: /opt/openstack-testing
     register: results
@@ -16,12 +48,12 @@
   - debug:
       var: results.stdout_lines
 
-  - name: Allure open allure-report
-    args:
-      chdir: /opt/openstack-testing
-    shell: |
-      PATH=/opt/allure-commandline/allure-2.21.0/bin:$PATH
-      allure serve -p 32000
-    register: results
-  - debug:
-      var: results.stdout_lines
+#  - name: Allure open allure-report
+#    args:
+#      chdir: /opt/openstack-testing
+#    shell: |
+#      PATH=/opt/allure-commandline/allure-2.21.0/bin:$PATH
+#      allure serve -p 32000
+#    register: results
+#  - debug:
+#      var: results.stdout_lines
