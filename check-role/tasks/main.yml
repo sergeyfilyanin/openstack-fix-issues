@@ -31,6 +31,10 @@
 #    register: results
 #  - debug: msg="T04 Infrastructure-Virtual Resources Tests passed successfully"
 
+  - name: Rm results
+    shell: |
+      rm -rf /opt/openstack-testing/allure-results
+      
   - name: Allure generate results
     args:
       chdir: /opt/openstack-testing
