@@ -6,13 +6,13 @@
 #  - debug:
 #      var: results.stdout_lines
       
-#  - name: Start T03 Administration - Compute / Storage Tests
-#    ansible.builtin.shell: npx playwright test ./tests/T03.spec.ts --reporter allure-playwright
-#    args:
-#      chdir: /opt/openstack-testing
-#    register: results
-#  - debug:
-#      var: results.stdout_lines
+  - name: Start T03 Administration - Compute / Storage Tests
+    ansible.builtin.shell: npx playwright test ./tests/T03.spec.ts --reporter allure-playwright
+    args:
+      chdir: /opt/openstack-testing
+    register: results
+  - debug:
+      var: results.stdout_lines
 
   - name: Start T06 Openstack Nodes Functionality Tests
     ansible.builtin.shell: npx playwright test ./tests/T06.spec.ts --reporter allure-playwright
@@ -54,16 +54,10 @@
     shell: |
       PATH=/opt/allure-commandline/allure-2.21.0/bin:$PATH
       node ./node_modules/allure-single-html-file-js/combine.js ./allure-report
-    register: results
-  - debug:
-      var: results.stdout_lines
 
   - name: Allure open allure-report
     args:
       chdir: /opt/openstack-testing
     shell: |
       PATH=/opt/allure-commandline/allure-2.21.0/bin:$PATH
-      allure serve -p 32300
-    register: results
-  - debug:
-      var: results.stdout_lines
+      nohup allure serve -p 32300 &
