@@ -7,33 +7,33 @@
 #      var: results.stdout_lines
       
 #  - name: Start T03 Administration - Compute / Storage Tests
-#    ansible.builtin.shell: npx playwright test T03.spec.ts --reporter allure-playwright
+#    ansible.builtin.shell: npx playwright test ./tests/T03.spec.ts --reporter allure-playwright
 #    args:
-#      chdir: /opt/openstack-testing/tests
+#      chdir: /opt/openstack-testing
 #    register: results
 #  - debug:
 #      var: results.stdout_lines
 
   - name: Start T06 Openstack Nodes Functionality Tests
-    ansible.builtin.shell: npx playwright test T06.spec.ts --reporter allure-playwright
+    ansible.builtin.shell: npx playwright test ./tests/T06.spec.ts --reporter allure-playwright
     args:
-      chdir: /opt/openstack-testing/tests
+      chdir: /opt/openstack-testing
     register: results
   - debug:
       var: results.stdout_lines
       
   - name: Start T07 RHOSP Version Tests
-    ansible.builtin.shell: npx playwright test T07.spec.ts --reporter allure-playwright
+    ansible.builtin.shell: npx playwright test ./tests/T07.spec.ts --reporter allure-playwright
     args:
-      chdir: /opt/openstack-testing/tests
+      chdir: /opt/openstack-testing
     register: results
   - debug:
       var: results.stdout_lines
       
 #  - name: Start T04 Infrastructure-Virtual Resources Tests
-#    ansible.builtin.shell: npx playwright test T04.spec.ts --reporter allure-playwright
+#    ansible.builtin.shell: npx playwright test ./tests/T04.spec.ts --reporter allure-playwright
 #    args:
-#      chdir: /opt/openstack-testing/tests
+#      chdir: /opt/openstack-testing
 #    register: results
 #  - debug:
 #      var: results.stdout_lines
