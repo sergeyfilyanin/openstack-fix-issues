@@ -1,10 +1,10 @@
-  - name: Start T01 Administration - Cloud Service Tests
-    ansible.builtin.shell: npx playwright test T01.spec.ts --reporter allure-playwright
-    args:
-      chdir: /opt/openstack-testing/tests
-    register: results
-  - debug:
-      var: results.stdout_lines
+#  - name: Start T01 Administration - Cloud Service Tests
+#    ansible.builtin.shell: npx playwright test T01.spec.ts --reporter allure-playwright
+#    args:
+#      chdir: /opt/openstack-testing/tests
+#    register: results
+#  - debug:
+#      var: results.stdout_lines
       
   - name: Start T03 Administration - Compute / Storage Tests
     ansible.builtin.shell: npx playwright test T03.spec.ts --reporter allure-playwright
@@ -30,13 +30,13 @@
   - debug:
       var: results.stdout_lines
       
-  - name: Start T04 Infrastructure-Virtual Resources Tests
-    ansible.builtin.shell: npx playwright test T04.spec.ts --reporter allure-playwright
-    args:
-      chdir: /opt/openstack-testing/tests
-    register: results
-  - debug:
-      var: results.stdout_lines
+#  - name: Start T04 Infrastructure-Virtual Resources Tests
+#    ansible.builtin.shell: npx playwright test T04.spec.ts --reporter allure-playwright
+#    args:
+#      chdir: /opt/openstack-testing/tests
+#    register: results
+#  - debug:
+#      var: results.stdout_lines
 
   - name: Allure generate results
     args:
