@@ -14,13 +14,13 @@
 #  - debug:
 #      var: results.stdout_lines
 
-#  - name: Start T06 Openstack Nodes Functionality Tests
-#    ansible.builtin.shell: npx playwright test ./tests/T06.spec.ts --reporter allure-playwright
-#    args:
-#      chdir: /opt/openstack-testing
-#    register: results
-#  - debug:
-#      var: results.stdout_lines
+  - name: Start T06 Openstack Nodes Functionality Tests
+    ansible.builtin.shell: npx playwright test ./tests/T06.spec.ts --reporter allure-playwright
+    args:
+      chdir: /opt/openstack-testing
+    register: results
+  - debug:
+      var: results.stdout_lines
       
   - name: Start T07 RHOSP Version Tests
     ansible.builtin.shell: npx playwright test ./tests/T07.spec.ts --reporter allure-playwright
