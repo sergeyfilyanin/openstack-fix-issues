@@ -63,7 +63,7 @@
       chdir: /opt/openstack-testing
     shell: |
       PATH=/opt/allure-commandline/allure-2.21.0/bin:$PATH
-      allure serve -p 32000
+      allure serve -p 32300
     register: results
   - debug:
       var: results.stdout_lines
