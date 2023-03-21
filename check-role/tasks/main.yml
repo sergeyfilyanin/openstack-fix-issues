@@ -18,11 +18,11 @@
 #      chdir: /opt/openstack-testing
 #  - debug: msg="T06 Openstack Nodes Functionality Tests passed successfully"
       
-#  - name: Start T07 RHOSP Version Tests
-#    ansible.builtin.shell: npx playwright test ./tests/T07.spec.ts --reporter allure-playwright
-#    args:
-#      chdir: /opt/openstack-testing
-#  - debug: msg="T07 RHOSP Version Tests passed successfully"
+  - name: Start T07 RHOSP Version Tests
+    ansible.builtin.shell: npx playwright test ./tests/T07.spec.ts --reporter allure-playwright
+    args:
+      chdir: /opt/openstack-testing
+  - debug: msg="T07 RHOSP Version Tests passed successfully"
       
 #  - name: Start T04 Infrastructure-Virtual Resources Tests
 #    ansible.builtin.shell: npx playwright test ./tests/T04.spec.ts --reporter allure-playwright
@@ -30,11 +30,7 @@
 #      chdir: /opt/openstack-testing
 #    register: results
 #  - debug: msg="T04 Infrastructure-Virtual Resources Tests passed successfully"
-
-  - name: Rm results
-    shell: |
-      rm -rf /opt/openstack-testing/allure-results
-      
+    
   - name: Allure generate results
     args:
       chdir: /opt/openstack-testing
