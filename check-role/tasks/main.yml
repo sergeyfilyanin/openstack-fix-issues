@@ -1,5 +1,5 @@
   - name: Start T01 Administration - Cloud Service Tests
-    ansible.builtin.shell: npx playwright test T01.spec.ts --headed
+    ansible.builtin.shell: npx playwright test T01.spec.ts
     args:
       chdir: /opt/openstack-testing/tests
     register: results
@@ -7,7 +7,7 @@
       var: results.stdout_lines
       
   - name: Start T03 Administration - Compute / Storage Tests
-    ansible.builtin.shell: npx playwright test T03.spec.ts --headed
+    ansible.builtin.shell: npx playwright test T03.spec.ts
     args:
       chdir: /opt/openstack-testing/tests
     register: results
@@ -15,7 +15,7 @@
       var: results.stdout_lines
 
   - name: Start T06 Openstack Nodes Functionality Tests
-    ansible.builtin.shell: npx playwright test T06.spec.ts --headed
+    ansible.builtin.shell: npx playwright test T06.spec.ts
     args:
       chdir: /opt/openstack-testing/tests
     register: results
@@ -23,7 +23,7 @@
       var: results.stdout_lines
       
   - name: Start T07 RHOSP Version Tests
-    ansible.builtin.shell: npx playwright test T07.spec.ts --headed
+    ansible.builtin.shell: npx playwright test T07.spec.ts
     args:
       chdir: /opt/openstack-testing/tests
     register: results
@@ -31,7 +31,7 @@
       var: results.stdout_lines
       
   - name: Start T04 Infrastructure-Virtual Resources Tests
-    ansible.builtin.shell: npx playwright test T04.spec.ts --headed
+    ansible.builtin.shell: npx playwright test T04.spec.ts
     args:
       chdir: /opt/openstack-testing/tests
     register: results
