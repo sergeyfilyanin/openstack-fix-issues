@@ -44,7 +44,7 @@
     register: results
   - debug:
       var: results.stdout_lines
-      
+        
   - name: Allure generate report
     args:
       chdir: /opt/openstack-testing
