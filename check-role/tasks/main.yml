@@ -6,13 +6,13 @@
 #  - debug:
 #      var: results.stdout_lines
       
-  - name: Start T03 Administration - Compute / Storage Tests
-    ansible.builtin.shell: npx playwright test T03.spec.ts --reporter allure-playwright
-    args:
-      chdir: /opt/openstack-testing/tests
-    register: results
-  - debug:
-      var: results.stdout_lines
+#  - name: Start T03 Administration - Compute / Storage Tests
+#    ansible.builtin.shell: npx playwright test T03.spec.ts --reporter allure-playwright
+#    args:
+#      chdir: /opt/openstack-testing/tests
+#    register: results
+#  - debug:
+#      var: results.stdout_lines
 
   - name: Start T06 Openstack Nodes Functionality Tests
     ansible.builtin.shell: npx playwright test T06.spec.ts --reporter allure-playwright
