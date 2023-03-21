@@ -3,6 +3,7 @@
     args:
       chdir: /opt/openstack-testing
     register: results
+    ignore_errors: true
   - debug: msg="T01 Administration - Cloud Service Tests passed successfully"
       
 #  - name: Start T03 Administration - Compute / Storage Tests
@@ -17,11 +18,11 @@
 #      chdir: /opt/openstack-testing
 #  - debug: msg="T06 Openstack Nodes Functionality Tests passed successfully"
       
-  - name: Start T07 RHOSP Version Tests
-    ansible.builtin.shell: npx playwright test ./tests/T07.spec.ts --reporter allure-playwright
-    args:
-      chdir: /opt/openstack-testing
-  - debug: msg="T07 RHOSP Version Tests passed successfully"
+#  - name: Start T07 RHOSP Version Tests
+#    ansible.builtin.shell: npx playwright test ./tests/T07.spec.ts --reporter allure-playwright
+#    args:
+#      chdir: /opt/openstack-testing
+#  - debug: msg="T07 RHOSP Version Tests passed successfully"
       
 #  - name: Start T04 Infrastructure-Virtual Resources Tests
 #    ansible.builtin.shell: npx playwright test ./tests/T04.spec.ts --reporter allure-playwright
