@@ -1,3 +1,6 @@
+  - name: Remove previous results
+    shell: rm -rf /opt/openstack-testing/allure-results
+
   - name: Healthcheck
     ansible.builtin.shell: npx playwright test ./tests/sysCheck.spec.ts
     args:
