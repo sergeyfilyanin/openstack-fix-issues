@@ -1,0 +1,30 @@
+  - name: Healthcheck
+    ansible.builtin.shell: npx playwright test ./tests/sysCheck.spec.ts
+    args:
+      chdir: /opt/openstack-testing
+    register: results
+    ignore_errors: true
+  - debug: msg="Healthckeck suit finished"
+      
+  - name: Allure generate results
+    args:
+      chdir: /opt/openstack-testing
+    shell: |
+      PATH=/opt/allure-commandline/allure-2.21.0/bin:$PATH
+      allure generate allure-results --clean
+    register: results
+  - debug:
+      var: results.stdout_lines
+        
+  - name: Allure generate report
+    args:
+      chdir: /opt/openstack-testing
+    shell: |
+      PATH=/opt/allure-commandline/allure-2.21.0/bin:$PATH
+      node ./node_modules/allure-single-html-file-js/combine.js ./allure-report
+  - name: Allure open allure-report
+    args:
+      chdir: /opt/openstack-testing
+    shell: |
+      PATH=/opt/allure-commandline/allure-2.21.0/bin:$PATH
+      nohup allure serve -p 32300 &
