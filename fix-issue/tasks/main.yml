@@ -38,12 +38,30 @@
 
       node ./node_modules/allure-single-html-file-js/combine.js ./allure-report
       
-  - name: Check basic images
+  - name: Install additional packages
     shell: |
       rpm -qa |grep -I “tmux\|crudini”
       yum -y install tmux crudini 
+      
+  - name: View environment file
+    shell: |
+      cat /etc/environment
+    register: results
+  - debug:
+      var: results.stdout_lines
 
   - name: View docker proxy
     shell: |
       cat /etc/systemd/system/docker.service.d/http-proxy.conf
+    register: results
+  - debug:
+      var: results.stdout_lines
+      
+  - name: View Red Hat Subscription Manager conf
+    shell: |
+      cat /etc/rhsm/rhsm.conf
+    register: results
+  - debug:
+      var: results.stdout_lines
+      
       
