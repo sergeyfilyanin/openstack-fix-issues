@@ -76,3 +76,45 @@
       regexp: '10000'
       replace: '43200'
       
+  - name: Data plane connectivity loss due to a stale namespaces issue
+    ansible.builtin.shell: cat > ~/add_overcloud_ansible_fact.yaml <<'EOF'
+          - hosts: undercloud
+            serial: 1
+            vars:
+              - stack_name: overcloud
+            tasks:
+              - name: Get the environment output
+                command: "openstack --os-cloud undercloud stack environment show {{ stack_name }}"
+                register: os_env_cmd
+              - name: save the environment as a hash
+                set_fact:
+                  os_env: "{{ os_env_cmd.stdout | from_yaml }}"
+              - name: Get dhcp image
+                set_fact:
+                  images:
+                    - dhcp_image: "{{ os_env['parameter_defaults']['DockerNeutronDHCPImage'] }}"
+                    - l3_image: "{{ os_env['parameter_defaults']['DockerNeutronL3AgentImage'] }}"
+                    - meta_image:  "{{ os_env['parameter_defaults']['DockerNeutronMetadataImage'] }}"
+              - name: Save it locally for retrieval for overcloud tasks
+                copy:
+                  content: "{{ images | to_json }}"
+                  dest: /home/stack/os_neutron_images_to_fix.json
+
+              - name: Create scripts to re-build the images, same name with new rpm.
+                copy:
+                  content: |
+                    #!/bin/bash
+                    set -eu
+                    echo "Doing {{ item.keys()|first }}"
+                    /home/stack/osp13-patch-container-with-rpms.sh -n {{ item.values()|first }} -f {{ item.values()|first }} -d /home/stack/neutron_fix
+                  dest: "/home/stack/osp13-rebuild-{{ item.keys()|first }}.sh"
+                  mode: "0755"
+                  loop: "{{ images }}"
+
+              - name: Run scripts to re-build the images, same name with new rpm.
+                shell: "/home/stack/osp13-rebuild-{{ item.keys()|first }}.sh 2>&1 | tee /home/stack/osp13-rebuild-{{ item.keys()|first }}.log"
+                loop: "{{ images }}"
+                
+  - name: Run playbook
+    shell:
+      ansible-playbook -i inventory.yaml neutron-fix-modify-images.yaml
