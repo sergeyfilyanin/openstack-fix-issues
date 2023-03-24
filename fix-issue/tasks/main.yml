@@ -1,0 +1,49 @@
+  - name: Create add_overcloud_ansible_fact.yaml
+    ansible.builtin.shell: cat > ~/add_overcloud_ansible_fact.yaml <<'EOF'
+      - hosts: overcloud
+        become: true
+        serial: 25
+        gather_facts: false
+        tasks:
+          - name: Add directory to support local dynamic facts.
+            file:
+              path: "/etc/ansible/facts.d"
+              state: directory
+              mode: "0755"
+          - name: Add local fact to discover if node is affected
+            copy:
+              content: |
+                #!/bin/bash
+                if [ -d /var/run/netns ]; then
+                if ls -l /var/run/netns | grep -q -- '----------.'; then
+                  echo '{"netns_issue": true }'
+                  exit 0
+                fi
+                fi
+                echo '{"netns_issue": false }'
+              dest: /etc/ansible/facts.d/netns.fact
+              mode: 0755
+         EOF
+
+      
+  - name: Create ansible static inventory
+    shell: |
+      source ~/stackrc
+      tripleo-ansible-inventory --ansible_ssh_user heat-admin --static-yaml-inventory ~/inventory.yaml
+
+        
+  - name: Run ansible
+    shell: |
+      ansible -i inventory.yaml '*' -m setup -a 'filter="ansible_local" gather_subset=facter' | awk 'match($0,/^([^|]+) \| SUCCESS/,line) {host=line[1];next}/netns_issue/{affected=$2;print host " is affected: " affected;host="";next}'
+
+      node ./node_modules/allure-single-html-file-js/combine.js ./allure-report
+      
+  - name: Check basic images
+    shell: |
+      rpm -qa |grep -I “tmux\|crudini”
+      yum -y install tmux crudini 
+
+  - name: View docker proxy
+    shell: |
+      cat /etc/systemd/system/docker.service.d/http-proxy.conf
+      
