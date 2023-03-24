@@ -62,5 +62,11 @@
     register: results
   - debug:
       var: results.stdout_lines
-      
+
+  - name: View Selinux conf
+    shell: |
+      cat /etc/selinux/config
+    register: results
+  - debug:
+      var: results.stdout_lines
       
