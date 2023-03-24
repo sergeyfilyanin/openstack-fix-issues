@@ -1,8 +1,0 @@
----
-- name: "check role undercloud"
-  hosts: testing
-  become_user: root
-
-
-  roles:
-    - check-role
