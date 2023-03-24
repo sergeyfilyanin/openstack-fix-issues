@@ -69,4 +69,10 @@
     register: results
   - debug:
       var: results.stdout_lines
+ 
+  - name: Edit the value of the ttl parameter
+    replace:
+      path: /usr/lib/python2.7/site-packages/tripleoclient/plugin.py
+      regexp: '10000'
+      replace: '43200'
       
