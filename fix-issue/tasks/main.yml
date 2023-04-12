@@ -91,7 +91,52 @@
   ansible.builtin.shell: |
     ansible-playbook -i inventory.yaml /home/stack/pull.yaml
 
-      
+ - name: Create affect_overcloud_node.yaml  
+   ansible.builtin.blockinfile:
+     path: /home/stack/pull.yaml
+     block: |
+       - hosts: overcloud
+         become: true
+         serial: 1
+         gather_facts: true
+         vars:
+           rpms:
+             - /home/stack/neutron_fix/iproute-4.11.0-26.el7.x86_64.rpm
+             - /home/stack/neutron_fix/python2-pyroute2-0.5.2-4.el7ost.noarch.rpm
+         tasks:
+           - block:
+             - name: Push rpms to the node
+               copy:
+                 src: "{{ item }}"
+                 dest: /tmp/
+               loop: "{{ rpms }}"
+             - name: Make the list of packages
+               set_fact:
+                 packages: "{{ packages|default([]) + [item|join('')] }}"
+               loop: "{{ []|zip_longest(rpms|map('basename'), fillvalue='/tmp/') | list}}"
+             - name: Install the packages.
+               package:
+                 name: "{{ packages }}"
+                 state: present
+             - name: Reboot affected nodes
+               debug:
+                 msg: "REBOOT"
+             - name: Reboot affected nodes
+               shell: "sleep 10 && /sbin/shutdown -r now"
+               async: 300
+               poll: 0
+             - name: waiting for server booting up
+               wait_for:
+                 port: 22
+                 host: '{{ (ansible_ssh_host|default(ansible_host))|default(inventory_hostname) }}'
+                 search_regex: OpenSSH
+                 delay: 10
+               connection: local
+
+
+
+
+
   - name: Create ansible static inventory
     shell: |
       source ~/stackrc
