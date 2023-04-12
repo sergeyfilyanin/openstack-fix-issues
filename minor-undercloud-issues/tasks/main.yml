@@ -43,7 +43,7 @@
              register: os_env_cmd
            - name: save the environment as a hash
              set_fact:
-               os_env: "{{ os_env_cmd.stdout | from_yaml }}"
+               os_env: "{{ os_env_cmd.stdout | from_yaml | default(omit) }}"
            - name: Get dhcp image
              set_fact:
                images:
