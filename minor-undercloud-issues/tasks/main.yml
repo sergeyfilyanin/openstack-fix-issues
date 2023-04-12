@@ -59,7 +59,6 @@
                content: |
                  #!/bin/bash
                  set -eu
-                 echo "Doing {{ item.keys()| default(omit) }}"
                  /home/stack/osp13-patch-container-with-rpms.sh -n {{ item.values()| default(omit) }} -f {{ item.values()| default(omit) }} -d /home/stack/neutron_fix
                dest: "/home/stack/osp13-rebuild-{{ item.keys()| default(omit) }}.sh"
                mode: "0755"
