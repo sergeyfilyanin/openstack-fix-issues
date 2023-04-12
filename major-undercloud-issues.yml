@@ -1,0 +1,8 @@
+---
+- name: "fix minor issue"
+  hosts: undercloud
+  become_user: stack
+
+
+  roles:
+    - major-undercloud-issues
