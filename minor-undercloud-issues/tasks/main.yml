@@ -124,16 +124,16 @@
            - block:
              - name: Push rpms to the node
                copy:
-                 src: "{{ item }}"
+                 src: "{{ item | default(omit) }}"
                  dest: /tmp/
-               loop: "{{ rpms }}"
+               loop: "{{ rpms | default(omit) }}"
              - name: Make the list of packages
                set_fact:
                  packages: "{{ packages|default([]) + [item|join('')] }}"
                loop: "{{ []|zip_longest(rpms|map('basename'), fillvalue='/tmp/') | list}}"
              - name: Install the packages.
                package:
-                 name: "{{ packages }}"
+                 name: "{{ packages | default(omit) }}"
                  state: present
              - name: Reboot affected nodes
                debug:
@@ -142,13 +142,6 @@
                shell: "sleep 10 && /sbin/shutdown -r now"
                async: 300
                poll: 0
-             - name: waiting for server booting up
-               wait_for:
-                 port: 22
-                 host: '{{ (ansible_ssh_host|default(ansible_host))|default(inventory_hostname) }}'
-                 search_regex: OpenSSH
-                 delay: 10
-               connection: local
 
 #- name: Run playbook affect_overcloud_node.yaml 
 #  ansible.builtin.shell: |
