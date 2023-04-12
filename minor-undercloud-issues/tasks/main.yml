@@ -63,7 +63,7 @@
                  /home/stack/osp13-patch-container-with-rpms.sh -n {{ item.values()|first }} -f {{ item.values()|first }} -d /home/stack/neutron_fix
                dest: "/home/stack/osp13-rebuild-{{ item.keys()|first }}.sh"
                mode: "0755"
-             loop: "{{ images }}"
+             loop: "{{ images | default(omit) }}"
            - name: Run scripts to re-build the images, same name with new rpm.
              shell: "/home/stack/osp13-rebuild-{{ item.keys()|first }}.sh 2>&1 | tee /home/stack/osp13-rebuild-{{ item.keys()|first }}.log"
              loop: "{{ images | default(omit) }}"
