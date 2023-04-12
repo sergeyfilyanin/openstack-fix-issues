@@ -52,7 +52,7 @@
                - meta_image:  "{{ os_env['parameter_defaults']['DockerNeutronMetadataImage'] | default(omit) }}"
            - name: Save it locally for retrieval for overcloud tasks
              copy:
-               content: "{{ images | to_json | default(omit) }}"
+               content: "{{ images | default(omit) }}"
                dest: /home/stack/os_neutron_images_to_fix.json
            - name: Create scripts to re-build the images, same name with new rpm.
              copy:
