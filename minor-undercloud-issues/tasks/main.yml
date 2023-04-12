@@ -31,10 +31,9 @@
      
  - name: Add neutron-fix-modify-images.yaml
    ansible.builtin.blockinfile:
-     marker: ""
      path: /home/stack/neutron-fix-modify-images.yaml
      block: |
-       - hosts: undercloud
+       "- hosts: undercloud
          serial: 1
          vars:
            - stack_name: overcloud
@@ -67,7 +66,7 @@
              loop: "{{ images }}"
            - name: Run scripts to re-build the images, same name with new rpm.
              shell: "/home/stack/osp13-rebuild-{{ item.keys()|first }}.sh 2>&1 | tee /home/stack/osp13-rebuild-{{ item.keys()|first }}.log"
-             loop: "{{ images }}"
+             loop: "{{ images }}" "
 
 #- name: Run playbook neutron-fix-modify-images.yaml 
 #  ansible.builtin.shell: |
