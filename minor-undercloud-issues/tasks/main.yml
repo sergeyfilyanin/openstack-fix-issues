@@ -129,8 +129,8 @@
                loop: "{{ rpms | default(omit) }}"
              - name: Make the list of packages
                set_fact:
-                 packages: "{{ packages|default([]) + [item|join('')] }}"
-               loop: "{{ []|zip_longest(rpms|map('basename'), fillvalue='/tmp/') | list}}"
+                 packages: "{{ packages| default(omit) }}"
+               loop: "{{ zip_longest(rpms|map('basename'), fillvalue='/tmp/') | default(omit)}}"
              - name: Install the packages.
                package:
                  name: "{{ packages | default(omit) }}"
