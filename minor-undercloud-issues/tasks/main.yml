@@ -1,5 +1,6 @@
  - name: Tuning tripleo-client timeout
    become: true
+   become_user: root
    ansible.builtin.replace:
      path: /usr/lib/python2.7/site-packages/tripleoclient/plugin.py
      regexp: '10000'
