@@ -1,0 +1,8 @@
+---
+- name: "fix monor issue"
+  hosts: undercloud
+  become_user: stack
+
+
+  roles:
+    - minor-undercloud-issues
