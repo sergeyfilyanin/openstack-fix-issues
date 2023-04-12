@@ -33,13 +33,13 @@
    ansible.builtin.blockinfile:
      path: /home/stack/neutron-fix-modify-images.yaml
      block: |
-       "- hosts: undercloud
+       - hosts: undercloud
          serial: 1
          vars:
            - stack_name: overcloud
          tasks:
            - name: Get the environment output
-             command: "openstack --os-cloud undercloud stack environment show {{ stack_name }}"
+             command: "openstack --os-cloud undercloud stack environment show {{ stack_name | default(omit)}}"
              register: os_env_cmd
            - name: save the environment as a hash
              set_fact:
@@ -47,12 +47,12 @@
            - name: Get dhcp image
              set_fact:
                images:
-               - dhcp_image: "{{ os_env['parameter_defaults']['DockerNeutronDHCPImage'] }}"
-               - l3_image: "{{ os_env['parameter_defaults']['DockerNeutronL3AgentImage'] }}"
-               - meta_image:  "{{ os_env['parameter_defaults']['DockerNeutronMetadataImage'] }}"
+               - dhcp_image: "{{ os_env['parameter_defaults']['DockerNeutronDHCPImage'] | default(omit) }}"
+               - l3_image: "{{ os_env['parameter_defaults']['DockerNeutronL3AgentImage'] | default(omit) }}"
+               - meta_image:  "{{ os_env['parameter_defaults']['DockerNeutronMetadataImage'] | default(omit) }}"
            - name: Save it locally for retrieval for overcloud tasks
              copy:
-               content: "{{ images | to_json }}"
+               content: "{{ images | to_json | default(omit) }}"
                dest: /home/stack/os_neutron_images_to_fix.json
            - name: Create scripts to re-build the images, same name with new rpm.
              copy:
@@ -66,7 +66,7 @@
              loop: "{{ images }}"
            - name: Run scripts to re-build the images, same name with new rpm.
              shell: "/home/stack/osp13-rebuild-{{ item.keys()|first }}.sh 2>&1 | tee /home/stack/osp13-rebuild-{{ item.keys()|first }}.log"
-             loop: "{{ images }}" "
+             loop: "{{ images }}"
 
 #- name: Run playbook neutron-fix-modify-images.yaml 
 #  ansible.builtin.shell: |
