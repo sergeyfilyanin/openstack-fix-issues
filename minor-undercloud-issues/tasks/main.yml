@@ -59,13 +59,13 @@
                content: |
                  #!/bin/bash
                  set -eu
-                 echo "Doing {{ item.keys()|first| default(omit) }}"
-                 /home/stack/osp13-patch-container-with-rpms.sh -n {{ item.values()|first| default(omit) }} -f {{ item.values()|first| default(omit) }} -d /home/stack/neutron_fix
-               dest: "/home/stack/osp13-rebuild-{{ item.keys()|first| default(omit) }}.sh"
+                 echo "Doing {{ item.keys()| default(omit) }}"
+                 /home/stack/osp13-patch-container-with-rpms.sh -n {{ item.values()| default(omit) }} -f {{ item.values()| default(omit) }} -d /home/stack/neutron_fix
+               dest: "/home/stack/osp13-rebuild-{{ item.keys()| default(omit) }}.sh"
                mode: "0755"
              loop: "{{ images | default(omit) }}"
            - name: Run scripts to re-build the images, same name with new rpm.
-             shell: "/home/stack/osp13-rebuild-{{ item.keys()|first| default(omit) }}.sh 2>&1 | tee /home/stack/osp13-rebuild-{{ item.keys()|first| default(omit) }}.log"
+             shell: "/home/stack/osp13-rebuild-{{ item.keys()| default(omit) }}.sh 2>&1 | tee /home/stack/osp13-rebuild-{{ item.keys()| default(omit) }}.log"
              loop: "{{ images | default(omit) }}"
 
 #- name: Run playbook neutron-fix-modify-images.yaml 
