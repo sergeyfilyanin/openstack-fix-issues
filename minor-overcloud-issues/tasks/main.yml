@@ -1,0 +1,10 @@
+- name: Known issue, Minor update to 13z16 failed with Unable to find constraint"
+  ansible.builtin.shell:
+    for i in $(sudo pcs constraint ref rabbitmq-bundle | awk '/cli-ban/{print $0}') ;do sudo pcs constraint remove $i ;done  
+
+- name: Reboot after fix
+  ansible.builtin.reboot:
+    test_command: uptime
+  become: yes
+  become_user: root
+- debug: msg="Undercloud was restarted successfully"
