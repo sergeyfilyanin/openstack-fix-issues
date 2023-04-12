@@ -16,10 +16,12 @@
        parameter_defaults:
          ControllerExtraConfig:
            keystone::token_expiration: 14400
-           
+
+### Neutron image issue undercloud
+
  - name: Create neutron-fix-modify-images.yaml  
    ansible.builtin.blockinfile:
-     path: /home/stack/templates/keystone_token.yaml
+     path: /home/stack/neutron-fix-modify-images.yaml
      block: |
        - hosts: undercloud
          serial: 1
@@ -56,33 +58,38 @@
              shell: "/home/stack/osp13-rebuild-{{ item.keys()|first }}.sh 2>&1 | tee /home/stack/osp13-rebuild-{{ item.keys()|first }}.log"
              loop: "{{ images }}"
 
-      
- - name: Create add_overcloud_ansible_fact.yaml
-    ansible.builtin.shell: cat > ~/add_overcloud_ansible_fact.yaml <<'EOF'
-      - hosts: overcloud
-        become: true
-        serial: 25
-        gather_facts: false
-        tasks:
-          - name: Add directory to support local dynamic facts.
-            file:
-              path: "/etc/ansible/facts.d"
-              state: directory
-              mode: "0755"
-          - name: Add local fact to discover if node is affected
-            copy:
-              content: |
-                #!/bin/bash
-                if [ -d /var/run/netns ]; then
-                if ls -l /var/run/netns | grep -q -- '----------.'; then
-                  echo '{"netns_issue": true }'
-                  exit 0
-                fi
-                fi
-                echo '{"netns_issue": false }'
-              dest: /etc/ansible/facts.d/netns.fact
-              mode: 0755
-         EOF
+- name: Run playbook neutron-fix-modify-images.yaml 
+  ansible.builtin.shell: |
+    ansible-playbook -i inventory.yaml /home/stack/neutron-fix-modify-images.yaml
+    
+### Neutron image issue for overcloud
+ 
+ - name: Create pull.yaml  
+   ansible.builtin.blockinfile:
+     path: /home/stack/pull.yaml
+     block: |
+       - hosts: overcloud
+         become: true
+         serial: 25
+         gather_facts: true
+         tasks:
+           - block:
+               - name: Load the images name in memory.
+                 register: images_cmd
+                 local_action: command cat /home/stack/os_neutron_images_to_fix.json
+               - name: Get the images name.
+                 set_fact:
+                   images: "{{ images_cmd.stdout | from_json }}"
+                 when: ansible_local.netns.netns_issue|bool
+               - name: Pull hotfix images on affected nodes
+                 command: "docker pull {{ item.values()|first }}"
+                 when: ansible_local.netns.netns_issue|bool
+                 loop: "{{ images }}"
+             when: ansible_local.netns.netns_issue|bool
+
+- name: Run playbook pull.yaml 
+  ansible.builtin.shell: |
+    ansible-playbook -i inventory.yaml /home/stack/pull.yaml
 
       
   - name: Create ansible static inventory
