@@ -92,12 +92,12 @@
                  local_action: command cat /home/stack/os_neutron_images_to_fix.json
                - name: Get the images name.
                  set_fact:
-                   images: "{{ images_cmd.stdout | from_json }}"
+                   images: "{{ images_cmd.stdout | default(omit) }}"
                  when: ansible_local.netns.netns_issue|bool
                - name: Pull hotfix images on affected nodes
-                 command: "docker pull {{ item.values()|first }}"
+                 command: "docker pull {{ item.values| default(omit) }}"
                  when: ansible_local.netns.netns_issue|bool
-                 loop: "{{ images }}"
+                 loop: "{{ images| default(omit) }}"
              when: ansible_local.netns.netns_issue|bool
 
 #- name: Run playbook pull.yaml 
