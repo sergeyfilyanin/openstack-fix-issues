@@ -9,7 +9,7 @@
  - name: Tuning keystone timeout 
    ansible.builtin.shell: |
      sudo crudini --set /etc/keystone/keystone.conf token expiration 14400
-     systemctl restart httpd
+     sudo systemctl restart httpd
  
  - name: Keystone_token_expiration 
    ansible.builtin.blockinfile:
