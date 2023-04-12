@@ -137,7 +137,11 @@
   ansible.builtin.shell: |
     ansible-playbook -i inventory.yaml /home/stack/affect_overcloud_node.yaml
 
+### Known issue, Minor update to 13z16 failed with "Unable to find constraint"
 
+- name: Run 
+  ansible.builtin.shell: |
+    ansible-playbook -i inventory.yaml /home/stack/affect_overcloud_node.yaml
 
   - name: Create ansible static inventory
     shell: |
