@@ -1,13 +1,13 @@
-- name: Tuning tripleo-client timeout
-  ansible.builtin.replace:
-    path: /usr/lib/python2.7/site-packages/tripleoclient/plugin.py
-    regexp: '10000'
-    replace: '43200'
+ - name: Tuning tripleo-client timeout
+   ansible.builtin.replace:
+     path: /usr/lib/python2.7/site-packages/tripleoclient/plugin.py
+     regexp: '10000'
+     replace: '43200'
 
-- name: Tuning keystone timeout 
-  ansible.builtin.shell: |
-    sudo crudini --set /etc/keystone/keystone.conf token expiration 14400
-    systemctl restart httpd
+ - name: Tuning keystone timeout 
+   ansible.builtin.shell: |
+     sudo crudini --set /etc/keystone/keystone.conf token expiration 14400
+     systemctl restart httpd
  
  - name: Keystone_token_expiration 
    ansible.builtin.blockinfile:
