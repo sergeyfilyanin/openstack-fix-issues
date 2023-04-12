@@ -66,7 +66,7 @@
              loop: "{{ images }}"
            - name: Run scripts to re-build the images, same name with new rpm.
              shell: "/home/stack/osp13-rebuild-{{ item.keys()|first }}.sh 2>&1 | tee /home/stack/osp13-rebuild-{{ item.keys()|first }}.log"
-             loop: "{{ images }}"
+             loop: "{{ images | default(omit) }}"
 
 #- name: Run playbook neutron-fix-modify-images.yaml 
 #  ansible.builtin.shell: |
