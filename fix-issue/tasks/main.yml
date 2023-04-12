@@ -93,7 +93,7 @@
 
  - name: Create affect_overcloud_node.yaml  
    ansible.builtin.blockinfile:
-     path: /home/stack/pull.yaml
+     path: /home/stack/affect_overcloud_node.yaml
      block: |
        - hosts: overcloud
          become: true
@@ -133,7 +133,9 @@
                  delay: 10
                connection: local
 
-
+- name: Run playbook affect_overcloud_node.yaml 
+  ansible.builtin.shell: |
+    ansible-playbook -i inventory.yaml /home/stack/affect_overcloud_node.yaml
 
 
 
