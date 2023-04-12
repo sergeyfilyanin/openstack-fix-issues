@@ -1,1 +1,55 @@
+ - name: tsx_template 
+   ansible.builtin.blockinfile:
+     path: /home/stack/templates/extra_tsx_template.yaml
+     block: |
+       parameter_defaults:
+           ComputeParameters:
+               KernelArgs: "tsx=off"
 
+- name: During upgrade Leapp by Framework For Upgrade, openvswitch failed to start with error 
+  ansible.builtin.shell: |
+    sudo su -
+    ls -l /etc/systemd/system/ovs*
+    cp /etc/systemd/system/ovs* /tmp/ovs_temp/
+    rm -f /etc/systemd/system/ovs*
+
+
+# After Leapp Upgrade
+
+- name: An FFU may randomly fail during the deploy step (after LEAPP and Upgrade itself) due to wrong SELinux labels associated to directory content.
+  ansible.builtin.shell: |
+    chcon -R -t container_file_t /var/log/containers/
+    chcon -R -t container_file_t /var/lib/mysql
+    chcon -R -t container_file_t /var/lib/redis
+    chcon -R -t container_file_t /var/lib/haproxy
+    chcon -R -t container_file_t /var/lib/manila
+    chcon -R -t container_file_t /var/lib/openvswitch/ovn
+    chcon -R -t container_file_t /var/lib/rabbitmq
+
+# Disable repo
+
+- name: The advanced-virt-for-rhel-8-x86_64-rpms and advanced-virt-for-rhel-8-x86_64-eus-rpms repos have been removed from the documentation as required repos for the Undercloud and the Overcloud
+  ansible.builtin.shell: |
+    sudo su -
+    subscription-manager repos --disable advanced-virt-for-rhel-8-x86_64-rpms
+    subscription-manager repos --disable advanced-virt-for-rhel-8-x86_64-eus-rpms
+    dnf module disable -y virt:8.2
+    dnf module enable -y virt:rhel
+    dnf distro-sync
+    yum clean all
+    
+ - name: Live migration fails due to qemu error during in-place upgrade
+   ansible.builtin.blockinfile:
+     path: /home/stack/templates/extra_nova_template.yaml
+     block: |
+       parameter_defaults:
+         ComputeExtraConfig:
+           nova::compute::libvirt::max_queues: 8
+
+ - name: BZ#2141393 - cephvolumescan actor fails
+   ansible.builtin.blockinfile:
+     path: /home/stack/templates/extra_leapp_template.yaml
+     block: |
+       parameter_defaults:
+         LeappActorsToRemove: ['cephvolumescan']
+  
