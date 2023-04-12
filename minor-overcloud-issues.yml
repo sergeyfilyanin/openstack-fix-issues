@@ -1,0 +1,8 @@
+---
+- name: "fix minor issue"
+  hosts: overcloud
+  become_user: stack
+
+
+  roles:
+    - minor-overcloud-issues
