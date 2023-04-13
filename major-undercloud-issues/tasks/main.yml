@@ -37,7 +37,11 @@
     dnf module enable -y virt:rhel
     dnf distro-sync
     yum clean all
-    
+
+
+# Known_Issue_5: (optional) BZ#2024447 - Identity service (keystone) password for the placement user was overridden by NovaPassword during FFU RHOSP 13 to 16   ???????
+
+
  - name: Live migration fails due to qemu error during in-place upgrade
    ansible.builtin.blockinfile:
      path: /home/stack/templates/extra_nova_template.yaml
