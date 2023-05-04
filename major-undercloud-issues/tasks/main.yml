@@ -29,13 +29,12 @@
 
 - name: ' An FFU may randomly fail during the deploy step (after LEAPP and Upgrade itself) due to wrong SELinux labels associated to directory content / chcon -R -t container_file_t /var/lib/* '
   ansible.builtin.shell: |
-    chcon -R -t container_file_t /var/log/containers/
-    chcon -R -t container_file_t /var/lib/mysql
-    chcon -R -t container_file_t /var/lib/redis
-    chcon -R -t container_file_t /var/lib/haproxy
-    chcon -R -t container_file_t /var/lib/manila
-    chcon -R -t container_file_t /var/lib/openvswitch/ovn
-    chcon -R -t container_file_t /var/lib/rabbitmq
+    sudo chcon -R -t container_file_t /var/log/containers/
+    sudo chcon -R -t container_file_t /var/lib/mysql
+    sudo chcon -R -t container_file_t /var/lib/redis
+    sudo chcon -R -t container_file_t /var/lib/haproxy
+    sudo chcon -R -t container_file_t /var/lib/manila
+    sudo chcon -R -t container_file_t /var/lib/rabbitmq
   register: results_validate
 - debug:
     var: results_validate.stdout_lines
