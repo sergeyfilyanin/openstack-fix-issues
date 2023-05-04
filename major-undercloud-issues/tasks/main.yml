@@ -19,9 +19,8 @@
 - name: ' During upgrade Leapp by Framework For Upgrade, openvswitch failed to start with error / rm -f /etc/systemd/system/ovs* '
   ansible.builtin.shell: |
     sudo su -
-    ls -l /etc/systemd/system/ovs*
-    cp /etc/systemd/system/ovs* /tmp/ovs_temp/
-    rm -rf /etc/systemd/system/ovs*
+    cp /etc/systemd/system/ovs /tmp/ovs_temp/
+    rm -rf /etc/systemd/system/ovs/*
   register: results_validate
 - debug:
     var: results_validate.stdout_lines
