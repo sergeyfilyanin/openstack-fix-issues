@@ -1,4 +1,11 @@
 - name: ' create tsx_template / touch /home/stack/templates/extra_tsx_template.yaml '
+  ansible.builtin.shell: |
+    touch /home/stack/templates/extra_tsx_template.yaml
+  register: results_validate
+- debug:
+    var: results_validate.stdout_lines
+
+- name: ' put conf in tsx_template'
   ansible.builtin.blockinfile:
     path: /home/stack/templates/extra_tsx_template.yaml
     block: |
@@ -53,8 +60,14 @@
 
 # Known_Issue_5: (optional) BZ#2024447 - Identity service (keystone) password for the placement user was overridden by NovaPassword during FFU RHOSP 13 to 16   ???????
 
-
 - name: ' Live migration fails due to qemu error during in-place upgrade / touch /home/stack/templates/extra_nova_template.yaml '
+  ansible.builtin.shell: |
+    touch /home/stack/templates/extra_tsx_template.yaml
+  register: results_validate
+- debug:
+    var: results_validate.stdout_lines
+
+- name: ' Put conf in /home/stack/templates/extra_nova_template.yaml '
   ansible.builtin.blockinfile:
     path: /home/stack/templates/extra_nova_template.yaml
     block: |
@@ -65,6 +78,13 @@
 - debug:
     var: results_validate.stdout_lines
 
+- name: ' BZ#2141393 - cephvolumescan actor fails / touch /home/stack/templates/extra_leapp_template.yaml '
+  ansible.builtin.shell: |
+    touch /home/stack/templates/extra_leapp_template.yaml
+  register: results_validate
+- debug:
+    var: results_validate.stdout_lines
+    
 - name: ' BZ#2141393 - cephvolumescan actor fails / touch /home/stack/templates/extra_leapp_template.yaml '
   ansible.builtin.blockinfile:
     path: /home/stack/templates/extra_leapp_template.yaml
