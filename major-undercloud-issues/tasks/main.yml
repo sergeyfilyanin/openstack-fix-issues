@@ -47,7 +47,7 @@
     sudo subscription-manager repos --disable advanced-virt-for-rhel-8-x86_64-eus-rpms
     sudo dnf module disable -y virt:8.2
     sudo dnf module enable -y virt:rhel
-    yum clean all
+    sudo yum clean all
   register: results_validate
 - debug:
     var: results_validate.stdout_lines
