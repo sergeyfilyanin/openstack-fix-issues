@@ -43,12 +43,10 @@
 
 - name: ' The advanced-virt-for-rhel-8-x86_64-rpms and advanced-virt-for-rhel-8-x86_64-eus-rpms repos have been removed from the documentation as required repos for the Undercloud and the Overcloud / subscription-manager repos --disable '
   ansible.builtin.shell: |
-    sudo su -
-    subscription-manager repos --disable advanced-virt-for-rhel-8-x86_64-rpms
-    subscription-manager repos --disable advanced-virt-for-rhel-8-x86_64-eus-rpms
-    dnf module disable -y virt:8.2
-    dnf module enable -y virt:rhel
-    dnf distro-sync
+    sudo subscription-manager repos --disable advanced-virt-for-rhel-8-x86_64-rpms
+    sudo subscription-manager repos --disable advanced-virt-for-rhel-8-x86_64-eus-rpms
+    sudo dnf module disable -y virt:8.2
+    sudo dnf module enable -y virt:rhel
     yum clean all
   register: results_validate
 - debug:
