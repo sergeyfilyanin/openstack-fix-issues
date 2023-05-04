@@ -57,7 +57,7 @@
 
 - name: ' Live migration fails due to qemu error during in-place upgrade / touch /home/stack/templates/extra_nova_template.yaml '
   ansible.builtin.shell: |
-    touch /home/stack/templates/extra_tsx_template.yaml
+    touch /home/stack/templates/extra_nova_template.yaml
   register: results_validate
 - debug:
     var: results_validate.stdout_lines
