@@ -1,4 +1,4 @@
- - name: Tuning tripleo-client timeout
+ - name: ' Tuning tripleo-client timeout / regexp /usr/lib/python2.7/site-packages/tripleoclient/plugin.py '
    become: true
    become_user: root
    ansible.builtin.replace:
@@ -6,12 +6,12 @@
      regexp: '10000'
      replace: '43200'
 
- - name: Tuning keystone timeout 
+ - name: ' Tuning keystone timeout / sudo crudini --set /etc/keystone/keystone.conf token expiration 14400 '
    ansible.builtin.shell: |
      sudo crudini --set /etc/keystone/keystone.conf token expiration 14400
      sudo systemctl restart httpd
 
- - name: Create keystone_token.yaml 
+ - name: ' Create keystone_token.yaml / touch /home/stack/templates/keystone_token.yaml '
    ansible.builtin.shell: |
      touch /home/stack/templates/keystone_token.yaml
      
@@ -25,7 +25,7 @@
 
 ### Neutron image issue undercloud
 
- - name: Create neutron-fix-modify-images.yaml
+ - name: ' Create neutron-fix-modify-images.yaml / touch /home/stack/neutron-fix-modify-images.yaml '
    ansible.builtin.shell: |
      touch /home/stack/neutron-fix-modify-images.yaml
      
